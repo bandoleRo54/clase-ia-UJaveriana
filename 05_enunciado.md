@@ -1,39 +1,39 @@
+Ôªø
+# üìö Ejercicio 5: Generador de Documentaci√≥n T√©cnica
 
-# ?? Ejercicio 5: Generador de Documentaci®Æn T®¶cnica
+## üéØ **Objetivo**
+Crear un sistema automatizado que genere documentaci√≥n t√©cnica profesional a partir de c√≥digo fuente, especificaciones o comentarios, produciendo README files, API docs y manuales de usuario en formato Markdown estructurado.
 
-## ?? **Objetivo**
-Crear un sistema automatizado que genere documentaci®Æn t®¶cnica profesional a partir de c®Ædigo fuente, especificaciones o comentarios, produciendo README files, API docs y manuales de usuario en formato Markdown estructurado.
+## üìù **Descripci√≥n Detallada**
+Desarrollar una plataforma que analice c√≥digo fuente, extraiga informaci√≥n sem√°ntica, funcional y estructural, y genere autom√°ticamente documentaci√≥n t√©cnica completa, bien formateada y √∫til para desarrolladores, incluyendo ejemplos de uso, API references y gu√≠as de instalaci√≥n.
 
-## ?? **Descripci®Æn Detallada**
-Desarrollar una plataforma que analice c®Ædigo fuente, extraiga informaci®Æn sem®¢ntica, funcional y estructural, y genere autom®¢ticamente documentaci®Æn t®¶cnica completa, bien formateada y ®≤til para desarrolladores, incluyendo ejemplos de uso, API references y gu®™as de instalaci®Æn.
+## üõ†Ô∏è **Tecnolog√≠as Requeridas**
+- **Docker** - Contenedorizaci√≥n del sistema generador
+- **n8n** - Orquestaci√≥n del flujo de an√°lisis y generaci√≥n
+- **GitHub Models** - IA para an√°lisis de c√≥digo y generaci√≥n de texto
+- **Formateo autom√°tico** - Generaci√≥n de Markdown estructurado y exportaci√≥n
 
-## ??? **Tecnolog®™as Requeridas**
-- **Docker** - Contenedorizaci®Æn del sistema generador
-- **n8n** - Orquestaci®Æn del flujo de an®¢lisis y generaci®Æn
-- **GitHub Models** - IA para an®¢lisis de c®Ædigo y generaci®Æn de texto
-- **Formateo autom®¢tico** - Generaci®Æn de Markdown estructurado y exportaci®Æn
-
-## ?? **Funcionalidades Esperadas**
+## ‚öôÔ∏è **Funcionalidades Esperadas**
 
 ### **Core (Obligatorias)**
-- [ ] **An®¢lisis de c®Ædigo fuente** para extraer funciones, clases y m®Ædulos
-- [ ] **Generaci®Æn de README** con secciones est®¢ndar
-- [ ] **Documentaci®Æn de API** con endpoints y par®¢metros
-- [ ] **Exportaci®Æn a Markdown** bien formateado
+- [ ] **An√°lisis de c√≥digo fuente** para extraer funciones, clases y m√≥dulos
+- [ ] **Generaci√≥n de README** con secciones est√°ndar
+- [ ] **Documentaci√≥n de API** con endpoints y par√°metros
+- [ ] **Exportaci√≥n a Markdown** bien formateado
 
 ### **Avanzadas (Opcionales)**
-- [ ] **Generaci®Æn de diagramas** autom®¢ticos (arquitectura, flujo)
-- [ ] **Ejemplos de c®Ædigo** funcionales generados por IA
-- [ ] **M®≤ltiples formatos** de salida (HTML, PDF, GitBook)
-- [ ] **Documentaci®Æn multi-idioma** (espa?ol, ingl®¶s)
+- [ ] **Generaci√≥n de diagramas** autom√°ticos (arquitectura, flujo)
+- [ ] **Ejemplos de c√≥digo** funcionales generados por IA
+- [ ] **M√∫ltiples formatos** de salida (HTML, PDF, GitBook)
+- [ ] **Documentaci√≥n multi-idioma** (espa√±ol, ingl√©s)
 
-## ?? **Casos de Uso Ejemplo**
+## üìä **Casos de Uso Ejemplo**
 
 ### **Caso 1: API REST Documentation**
 
 #### Caso 1 - Input:
 ```python
-# C®Ædigo Input - FastAPI
+# C√≥digo Input - FastAPI
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
@@ -53,15 +53,15 @@ async def create_user(user: User):
 
 @app.get("/users/{user_id}")
 async def get_user(user_id: int):
-    """Obtiene informaci®Æn de un usuario espec®™fico"""
-    return {"user_id": user_id, "name": "Juan P®¶rez"}
+    """Obtiene informaci√≥n de un usuario espec√≠fico"""
+    return {"user_id": user_id, "name": "Juan P√©rez"}
 ```
 
 #### Caso 1 - Output:
 
-# ?? API Documentation
+# üì° API Documentation
 
-## ?? Endpoints
+## üöÄ Endpoints
 
 ### POST /users/
 Crea un nuevo usuario en el sistema.
@@ -85,26 +85,26 @@ Crea un nuevo usuario en el sistema.
 
 **Validaciones:**
 - `age`: Debe ser mayor o igual a 18
-- `email`: Formato de email v®¢lido
+- `email`: Formato de email v√°lido
 
 **Ejemplo de uso:**
 ```bash
 curl -X POST "http://localhost:8000/users/" \
      -H "Content-Type: application/json" \
-     -d '{"name": "Ana Garc®™a", "email": "ana@email.com", "age": 25}'
+     -d '{"name": "Ana Garc√≠a", "email": "ana@email.com", "age": 25}'
 ```
 
 ### GET /users/{user_id}
-Obtiene informaci®Æn de un usuario espec®™fico.
+Obtiene informaci√≥n de un usuario espec√≠fico.
 
-**Par®¢metros:**
-- `user_id` (integer): ID ®≤nico del usuario
+**Par√°metros:**
+- `user_id` (integer): ID √∫nico del usuario
 
 **Response:**
 ```json
 {
   "user_id": 123,
-  "name": "Juan P®¶rez"
+  "name": "Juan P√©rez"
 }
 ```
 
@@ -114,7 +114,7 @@ Obtiene informaci®Æn de un usuario espec®™fico.
 
 #### Caso 2 - Input:
 ```javascript
-// C®Ædigo Input - Node.js Project
+// C√≥digo Input - Node.js Project
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
@@ -145,26 +145,26 @@ app.listen(3000, () => {
 
 #### Caso 2 - Output:
 
-# ?? MyApp - Sistema de Autenticaci®Æn
+# üöÄ MyApp - Sistema de Autenticaci√≥n
 
-## ?? Descripci®Æn
-Sistema de autenticaci®Æn construido con Node.js, Express y MongoDB que proporciona registro y login de usuarios con encriptaci®Æn segura de contrase?as.
+## üìã Descripci√≥n
+Sistema de autenticaci√≥n construido con Node.js, Express y MongoDB que proporciona registro y login de usuarios con encriptaci√≥n segura de contrase√±as.
 
-## ??? Tecnolog®™as Utilizadas
+## üõ†Ô∏è Tecnolog√≠as Utilizadas
 - **Node.js** - Runtime de JavaScript
 - **Express** - Framework web
 - **MongoDB** - Base de datos NoSQL
 - **Mongoose** - ODM para MongoDB
-- **bcrypt** - Encriptaci®Æn de contrase?as
+- **bcrypt** - Encriptaci√≥n de contrase√±as
 
-## ? Instalaci®Æn R®¢pida
+## ‚ö° Instalaci√≥n R√°pida
 
 ### Prerrequisitos
 - Node.js >= 14.0.0
 - MongoDB >= 4.0
 - npm o yarn
 
-### Pasos de Instalaci®Æn
+### Pasos de Instalaci√≥n
 ```bash
 # 1. Clonar el repositorio
 git clone https://github.com/tu-usuario/myapp.git
@@ -180,33 +180,33 @@ cp .env.example .env
 # 4. Iniciar MongoDB
 mongod
 
-# 5. Iniciar la aplicaci®Æn
+# 5. Iniciar la aplicaci√≥n
 npm start
 ```
 
-## ?? API Endpoints
+## üåê API Endpoints
 
-### Autenticaci®Æn
-- `POST /auth/login` - Iniciar sesi®Æn
+### Autenticaci√≥n
+- `POST /auth/login` - Iniciar sesi√≥n
 
-## ?? Estructura del Proyecto
+## üìÅ Estructura del Proyecto
 ```
 myapp/
-©¿©§©§ models/
-©¶   ©∏©§©§ User.js
-©¿©§©§ routes/
-©¶   ©∏©§©§ auth.js
-©¿©§©§ middleware/
-©¿©§©§ config/
-©∏©§©§ server.js
+‚îú‚îÄ‚îÄ models/
+‚îÇ   ‚îî‚îÄ‚îÄ User.js
+‚îú‚îÄ‚îÄ routes/
+‚îÇ   ‚îî‚îÄ‚îÄ auth.js
+‚îú‚îÄ‚îÄ middleware/
+‚îú‚îÄ‚îÄ config/
+‚îî‚îÄ‚îÄ server.js
 ```
 
-## ?? Testing
+## üß™ Testing
 ```bash
 npm test
 ```
 
-## ?? Licencia
+## üìÑ Licencia
 MIT License
 
 ---
@@ -215,7 +215,7 @@ MIT License
 
 #### Caso 3 - Input:
 ```python
-# C®Ædigo Input - Python Class
+# C√≥digo Input - Python Class
 class DatabaseManager:
     """Maneja conexiones y operaciones de base de datos"""
     
@@ -224,15 +224,15 @@ class DatabaseManager:
         Inicializa el manager de base de datos
         
         Args:
-            connection_string (str): String de conexi®Æn a la BD
+            connection_string (str): String de conexi√≥n a la BD
         """
         self.connection = connection_string
         self.is_connected = False
     
     def connect(self):
-        """Establece conexi®Æn con la base de datos"""
+        """Establece conexi√≥n con la base de datos"""
         try:
-            # L®Ægica de conexi®Æn
+            # L√≥gica de conexi√≥n
             self.is_connected = True
             return True
         except Exception as e:
@@ -244,7 +244,7 @@ class DatabaseManager:
         
         Args:
             query (str): Consulta SQL a ejecutar
-            params (tuple, optional): Par®¢metros para la consulta
+            params (tuple, optional): Par√°metros para la consulta
             
         Returns:
             list: Resultados de la consulta
@@ -261,34 +261,34 @@ class DatabaseManager:
 
 #### Caso 3 - Output:
 
-# ??? DatabaseManager
+# üóÑÔ∏è DatabaseManager
 
-## ?? Descripci®Æn
+## üìù Descripci√≥n
 Clase para manejar conexiones y operaciones de base de datos de manera segura y eficiente.
 
-## ??? Constructor
+## üèóÔ∏è Constructor
 
 ### `__init__(connection_string)`
 Inicializa el manager de base de datos.
 
-**Par®¢metros:**
-- `connection_string` (str): String de conexi®Æn a la base de datos
+**Par√°metros:**
+- `connection_string` (str): String de conexi√≥n a la base de datos
 
 **Ejemplo:**
 ```python
 db = DatabaseManager("postgresql://user:pass@localhost:5432/mydb")
 ```
 
-## ?? M®¶todos
+## üìñ M√©todos
 
 ### `connect()`
-Establece conexi®Æn con la base de datos.
+Establece conexi√≥n con la base de datos.
 
 **Returns:**
-- `bool`: True si la conexi®Æn es exitosa
+- `bool`: True si la conexi√≥n es exitosa
 
 **Excepciones:**
-- `ConnectionError`: Si no se puede establecer la conexi®Æn
+- `ConnectionError`: Si no se puede establecer la conexi√≥n
 
 **Ejemplo:**
 ```python
@@ -302,98 +302,98 @@ except ConnectionError as e:
 ### `execute_query(query, params=None)`
 Ejecuta una consulta SQL en la base de datos conectada.
 
-**Par®¢metros:**
+**Par√°metros:**
 - `query` (str): Consulta SQL a ejecutar
-- `params` (tuple, optional): Par®¢metros para queries parametrizadas
+- `params` (tuple, optional): Par√°metros para queries parametrizadas
 
 **Returns:**
 - `list`: Lista con los resultados de la consulta
 
 **Excepciones:**
-- `ConnectionError`: Si la base de datos no est®¢ conectada
-- `DatabaseError`: Si hay un error en la ejecuci®Æn de la consulta
+- `ConnectionError`: Si la base de datos no est√° conectada
+- `DatabaseError`: Si hay un error en la ejecuci√≥n de la consulta
 
 **Ejemplo:**
 ```python
 # Query simple
 results = db.execute_query("SELECT * FROM users")
 
-# Query con par®¢metros
+# Query con par√°metros
 user = db.execute_query(
     "SELECT * FROM users WHERE id = %s", 
     (user_id,)
 )
 ```
 
-## ?? Consideraciones
-- Aseg®≤rate de llamar `connect()` antes de ejecutar consultas
-- Usa par®¢metros para evitar inyecciones SQL
+## ‚ö†Ô∏è Consideraciones
+- Aseg√∫rate de llamar `connect()` antes de ejecutar consultas
+- Usa par√°metros para evitar inyecciones SQL
 - Maneja las excepciones apropiadamente
 
 ---
 
-## ??? **Arquitectura Sugerida**
+## üèóÔ∏è **Arquitectura Sugerida**
 
 ```
-Code Input °˙ [AST Analysis] °˙ [Comment Extraction] °˙ [AI Processing] °˙ [Template Engine] °˙ [Markdown Generation] °˙ [Format & Export]
+Code Input ‚Üí [AST Analysis] ‚Üí [Comment Extraction] ‚Üí [AI Processing] ‚Üí [Template Engine] ‚Üí [Markdown Generation] ‚Üí [Format & Export]
 ```
 
 ### **Flujo Detallado:**
-1. **Code Analysis**: Parsear c®Ædigo y extraer estructura (clases, funciones, m®Ædulos)
+1. **Code Analysis**: Parsear c√≥digo y extraer estructura (clases, funciones, m√≥dulos)
 2. **Comment Extraction**: Extraer docstrings, comentarios y anotaciones
-3. **Type Analysis**: Analizar tipos de datos, par®¢metros y returns
+3. **Type Analysis**: Analizar tipos de datos, par√°metros y returns
 4. **AI Enhancement**: IA genera descripciones, ejemplos y mejoras
-5. **Template Processing**: Aplicar templates por tipo de documentaci®Æn
+5. **Template Processing**: Aplicar templates por tipo de documentaci√≥n
 6. **Markdown Generation**: Generar Markdown bien estructurado
-7. **Export**: M®≤ltiples formatos de salida y distribuci®Æn
+7. **Export**: M√∫ltiples formatos de salida y distribuci√≥n
 
-## ?? **Criterios de Evaluaci®Æn Espec®™ficos**
+## üéØ **Criterios de Evaluaci√≥n Espec√≠ficos**
 
 ### **Funcionamiento (40 pts)**
-- [ ] Genera documentaci®Æn completa y ®≤til
-- [ ] Markdown est®¢ bien formateado y estructurado
-- [ ] Ejemplos de c®Ædigo son funcionales y relevantes
-- [ ] Maneja m®≤ltiples lenguajes de programaci®Æn
+- [ ] Genera documentaci√≥n completa y √∫til
+- [ ] Markdown est√° bien formateado y estructurado
+- [ ] Ejemplos de c√≥digo son funcionales y relevantes
+- [ ] Maneja m√∫ltiples lenguajes de programaci√≥n
 
-### **Integraci®Æn T®¶cnica (20 pts)**
-- [ ] Parser de c®Ædigo robusto para diferentes sintaxis
+### **Integraci√≥n T√©cnica (20 pts)**
+- [ ] Parser de c√≥digo robusto para diferentes sintaxis
 - [ ] Templates flexibles y configurables
 - [ ] Pipeline de procesamiento eficiente
-- [ ] Exportaci®Æn a m®≤ltiples formatos
+- [ ] Exportaci√≥n a m√∫ltiples formatos
 
 ### **Calidad (15 pts)**
-- [ ] Documentaci®Æn es clara y profesional
-- [ ] Ejemplos son pr®¢cticos y educativos
-- [ ] Estructura l®Ægica y navegaci®Æn intuitiva
+- [ ] Documentaci√≥n es clara y profesional
+- [ ] Ejemplos son pr√°cticos y educativos
+- [ ] Estructura l√≥gica y navegaci√≥n intuitiva
 - [ ] Consistencia en formato y estilo
 
-## ?? **Entregables Espec®™ficos**
+## üìö **Entregables Espec√≠ficos**
 
-### **C®Ædigo**
-- Parser multi-lenguaje para c®Ædigo fuente
+### **C√≥digo**
+- Parser multi-lenguaje para c√≥digo fuente
 - Engine de templates para diferentes tipos de docs
-- Generador de ejemplos autom®¢ticos
-- Exportador a m®≤ltiples formatos
+- Generador de ejemplos autom√°ticos
+- Exportador a m√∫ltiples formatos
 
-### **Documentaci®Æn**
-- Gu®™a de templates disponibles
-- Configuraci®Æn de estilos de documentaci®Æn
-- Ejemplos de documentaci®Æn generada
-- Manual de personalizaci®Æn
+### **Documentaci√≥n**
+- Gu√≠a de templates disponibles
+- Configuraci√≥n de estilos de documentaci√≥n
+- Ejemplos de documentaci√≥n generada
+- Manual de personalizaci√≥n
 
 ### **Demo**
 - Documentar proyecto completo en vivo
-- Mostrar diferentes tipos de documentaci®Æn
-- Demostrar personalizaci®Æn de templates
-- Exportar a m®≤ltiples formatos
+- Mostrar diferentes tipos de documentaci√≥n
+- Demostrar personalizaci√≥n de templates
+- Exportar a m√∫ltiples formatos
 
-## ?? **Tips de Implementaci®Æn**
+## üí° **Tips de Implementaci√≥n**
 
 ### **Primeros Pasos**
 1. Comienza con un lenguaje (Python es ideal por docstrings)
-2. Implementa parser b®¢sico de funciones y clases
+2. Implementa parser b√°sico de funciones y clases
 3. Crea templates simples de Markdown
-4. Agrega gradualmente m®¢s funcionalidades
+4. Agrega gradualmente m√°s funcionalidades
 
 ### **Parsers Sugeridos**
 ```python
@@ -456,43 +456,43 @@ templates:
       - examples
 ```
 
-## ?? **Recursos ®≤tiles**
+## üîó **Recursos √ötiles**
 
 - **AST Parsing**: https://docs.python.org/3/library/ast.html
 - **JavaScript Parser**: https://esprima.org/
 - **Markdown Generation**: https://python-markdown.github.io/
 - **Template Engine**: https://jinja.palletsprojects.com/
 
-## ?? **Criterios de Excelencia**
+## üèÜ **Criterios de Excelencia**
 
-Para obtener la m®¢xima puntuaci®Æn, considera implementar:
-- **Diagram Generation**: Generar diagramas UML, flujo, arquitectura autom®¢ticamente
-- **Interactive Examples**: Ejemplos ejecutables en la documentaci®Æn
-- **Version Tracking**: Comparar cambios entre versiones de documentaci®Æn
-- **Integration Testing**: Verificar que ejemplos de c®Ædigo funcionen
-- **Custom Themes**: M®≤ltiples temas visuales para la documentaci®Æn
-- **Git Integration**: Actualizaci®Æn autom®¢tica con commits
+Para obtener la m√°xima puntuaci√≥n, considera implementar:
+- **Diagram Generation**: Generar diagramas UML, flujo, arquitectura autom√°ticamente
+- **Interactive Examples**: Ejemplos ejecutables en la documentaci√≥n
+- **Version Tracking**: Comparar cambios entre versiones de documentaci√≥n
+- **Integration Testing**: Verificar que ejemplos de c√≥digo funcionen
+- **Custom Themes**: M√∫ltiples temas visuales para la documentaci√≥n
+- **Git Integration**: Actualizaci√≥n autom√°tica con commits
 
-## ?? **Tipos de Documentaci®Æn Soportados**
+## üìä **Tipos de Documentaci√≥n Soportados**
 
 ### **README.md**
-- Descripci®Æn del proyecto
-- Instalaci®Æn y configuraci®Æn
-- Ejemplos de uso b®¢sico
+- Descripci√≥n del proyecto
+- Instalaci√≥n y configuraci√≥n
+- Ejemplos de uso b√°sico
 - Estructura del proyecto
-- Contribuci®Æn y licencia
+- Contribuci√≥n y licencia
 
 ### **API Documentation**
 - Endpoints disponibles
-- Par®¢metros y tipos
+- Par√°metros y tipos
 - Ejemplos de request/response
-- C®Ædigos de error
+- C√≥digos de error
 - Rate limiting
 
 ### **Code Documentation**
-- Documentaci®Æn de clases
-- M®¶todos y funciones
-- Par®¢metros y returns
+- Documentaci√≥n de clases
+- M√©todos y funciones
+- Par√°metros y returns
 - Excepciones posibles
 - Ejemplos de uso
 
