@@ -1,0 +1,6 @@
+{
+    "name": "generador-documentacion-tecnica",
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "generador-documentacion-tecnica",
+    "workspaceFolder": "/workspace"
+}

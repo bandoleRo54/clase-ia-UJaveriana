@@ -1,8 +1,0 @@
-version: '3.8'
-services:
-  laboratory-environment:
-    container_name: laboratory-environment
-    image: python:3.13.9-alpine3.22 
-    volumes:
-      - ./proyecto:/workspace
-    command: sleep infinity
