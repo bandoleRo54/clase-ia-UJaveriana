@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  doc-generator:
+    build: .
+    container_name: doc-generator-api
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+    volumes:
+      - ./:/app
+    command: python api_server.py
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s

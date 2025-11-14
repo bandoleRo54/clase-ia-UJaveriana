@@ -1,0 +1,356 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Technical Documentation Generator API",
+    "description": "API para generar documentación técnica profesional a partir de código fuente",
+    "version": "1.0.0",
+    "contact": {
+      "name": "API Support"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Verifica que el API está funcionando",
+        "tags": ["System"],
+        "responses": {
+          "200": {
+            "description": "API is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "service": {"type": "string"},
+                    "version": {"type": "string"},
+                    "supported_formats": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/analyze": {
+      "post": {
+        "summary": "Analyze Source Code",
+        "description": "Analiza código fuente y extrae su estructura (funciones, clases, imports)",
+        "tags": ["Core"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["file_path"],
+                "properties": {
+                  "file_path": {
+                    "type": "string",
+                    "description": "Ruta al archivo de código (.py o .js)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Análisis completado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "file": {"type": "string"},
+                    "analysis": {
+                      "type": "object",
+                      "properties": {
+                        "functions": {"type": "array"},
+                        "classes": {"type": "array"},
+                        "imports": {"type": "array"},
+                        "endpoints": {"type": "array"},
+                        "summary": {"type": "object"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parámetros inválidos"
+          },
+          "404": {
+            "description": "Archivo no encontrado"
+          }
+        }
+      }
+    },
+    "/api/v1/generate/readme": {
+      "post": {
+        "summary": "Generate README Documentation",
+        "description": "Genera documentación README del proyecto",
+        "tags": ["Documentation"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["file_path"],
+                "properties": {
+                  "file_path": {
+                    "type": "string",
+                    "description": "Ruta al archivo de código"
+                  },
+                  "project_name": {
+                    "type": "string",
+                    "description": "Nombre del proyecto",
+                    "default": "Mi Proyecto"
+                  },
+                  "use_llm": {
+                    "type": "boolean",
+                    "description": "Usar LLM para mejorar descripciones",
+                    "default": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "README generado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "file": {"type": "string"},
+                    "project_name": {"type": "string"},
+                    "content": {"type": "string"},
+                    "format": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/generate/api-docs": {
+      "post": {
+        "summary": "Generate API Documentation",
+        "description": "Genera documentación de endpoints REST",
+        "tags": ["Documentation"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["file_path"],
+                "properties": {
+                  "file_path": {
+                    "type": "string",
+                    "description": "Ruta al archivo con endpoints (API)"
+                  },
+                  "use_llm": {
+                    "type": "boolean",
+                    "description": "Usar LLM para ejemplos y mejoras",
+                    "default": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "API documentation generada"
+          }
+        }
+      }
+    },
+    "/api/v1/generate/class-docs": {
+      "post": {
+        "summary": "Generate Class Documentation",
+        "description": "Genera documentación detallada de una clase",
+        "tags": ["Documentation"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["file_path"],
+                "properties": {
+                  "file_path": {
+                    "type": "string"
+                  },
+                  "class_name": {
+                    "type": "string",
+                    "description": "Nombre de la clase (opcional, usa la primera si no se especifica)"
+                  },
+                  "use_llm": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Documentación de clase generada"
+          }
+        }
+      }
+    },
+    "/api/v1/generate/function-docs": {
+      "post": {
+        "summary": "Generate Function Documentation",
+        "description": "Genera documentación detallada de una función",
+        "tags": ["Documentation"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["file_path"],
+                "properties": {
+                  "file_path": {
+                    "type": "string"
+                  },
+                  "function_name": {
+                    "type": "string",
+                    "description": "Nombre de la función (opcional)"
+                  },
+                  "use_llm": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Documentación de función generada"
+          }
+        }
+      }
+    },
+    "/api/v1/generate/complete": {
+      "post": {
+        "summary": "Generate Complete Documentation",
+        "description": "Genera README + API Docs + Class Docs en una sola llamada",
+        "tags": ["Documentation"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["file_path"],
+                "properties": {
+                  "file_path": {
+                    "type": "string"
+                  },
+                  "project_name": {
+                    "type": "string"
+                  },
+                  "use_llm": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Documentación completa generada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "file": {"type": "string"},
+                    "project_name": {"type": "string"},
+                    "documentation": {
+                      "type": "object",
+                      "properties": {
+                        "readme": {"type": "string"},
+                        "api_docs": {"type": "string"},
+                        "classes": {"type": "array"}
+                      }
+                    },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "functions": {"type": "integer"},
+                        "classes": {"type": "integer"},
+                        "endpoints": {"type": "integer"}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Function": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "docstring": {"type": "string"},
+          "args": {"type": "array", "items": {"type": "string"}},
+          "decorators": {"type": "array", "items": {"type": "string"}},
+          "return_type": {"type": "string"}
+        }
+      },
+      "Class": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "docstring": {"type": "string"},
+          "methods": {"type": "array"},
+          "properties": {"type": "array"}
+        }
+      },
+      "Endpoint": {
+        "type": "object",
+        "properties": {
+          "method": {"type": "string"},
+          "path": {"type": "string"},
+          "description": {"type": "string"}
+        }
+      }
+    }
+  }
+}
