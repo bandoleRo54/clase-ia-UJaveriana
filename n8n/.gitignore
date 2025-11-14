@@ -10,3 +10,6 @@ n8n_data/*
 
 # Backups
 backup_*
+
+# Carpetas creadas por n8n-simple.sh y docker-compose.yml
+*_data
