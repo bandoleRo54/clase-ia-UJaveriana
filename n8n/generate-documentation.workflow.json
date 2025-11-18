@@ -1,0 +1,130 @@
+{
+  "name": "Generate Full Documentation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "generate-doc",
+        "responseMode": "last",
+        "options": {}
+      },
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "={{ $env.DOCUMENTATION_API_URL || 'http://host.docker.internal:5000' + '/api/v1/generate/complete' }}",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"file_path\": $json.body.file_path,\n  \"project_name\": $json.body.project_name,\n  \"use_llm\": $json.body.use_llm\n}"
+      },
+      "name": "Generate Complete Docs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [600, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const body = $json.body || $json;\nconst doc = body.documentation || {};\nconst projectName = body.project_name || 'project';\n\nconst items = [];\n\n// README\nif (doc.readme) {\n  items.push({\n    json: {\n      projectName: projectName,\n      fileName: `${projectName}-README.md`,\n      content: doc.readme\n    }\n  });\n}\n\n// API Docs\nif (doc.api_docs) {\n  items.push({\n    json: {\n      projectName: projectName,\n      fileName: `${projectName}-API_DOCS.md`,\n      content: doc.api_docs\n    }\n  });\n}\n\n// Class Docs\nif (doc.classes && doc.classes.length > 0) {\n  const classDocsContent = doc.classes.map(c => c.content).join('\\n\\n---\\n\\n');\n  items.push({\n    json: {\n      projectName: projectName,\n      fileName: `${projectName}-CLASS_DOCS.md`,\n      content: classDocsContent\n    }\n  });\n}\n\nreturn items;"
+      },
+      "name": "Split Documentation",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [950, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const content = $json.content;\nconst binaryData = Buffer.from(content, 'utf8').toString('base64');\nreturn [{ \n  json: $json, \n  binary: { \n    data: { \n      data: binaryData, \n      fileName: $json.fileName,\n      mimeType: 'text/markdown' \n    }\n  }\n}];"
+      },
+      "name": "Build Binary File",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "filePath": "={{ '/data/n8n_data/' + ($json.fileName || 'default.md') }}",
+        "binaryPropertyName": "data"
+      },
+      "name": "Write Documentation File",
+      "type": "n8n-nodes-base.writeBinaryFile",
+      "typeVersion": 1,
+      "position": [1550, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "n8n@example.com",
+        "toEmail": "={{ $json[\"notification_email\"] || $env.NOTIFY_EMAIL || '' }}",
+        "subject": "Documentation generated: {{$json.projectName}}",
+        "text": "La documentación para {{$json.projectName}} se ha generado y guardado.\nArchivos generados:\n- {{$json.projectName}}-README.md\n- {{$json.projectName}}-API_DOCS.md\n- {{$json.projectName}}-CLASS_DOCS.md"
+      },
+      "name": "Notify (optional)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [1850, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Generate Complete Docs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Complete Docs": {
+      "main": [
+        [
+          {
+            "node": "Split Documentation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Documentation": {
+      "main": [
+        [
+          {
+            "node": "Build Binary File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Binary File": {
+      "main": [
+        [
+          {
+            "node": "Write Documentation File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Documentation File": {
+      "main": [
+        [
+          {
+            "node": "Notify (optional)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": "1"
+}
