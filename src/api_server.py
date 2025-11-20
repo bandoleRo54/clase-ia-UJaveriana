@@ -7,25 +7,28 @@ and returns the model's responses.
 from flask import Flask, request, jsonify
 import os
 from openai import OpenAI
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload
 
+# Cargar variables de entorno desde .env si existe
+load_dotenv()
 
-# Configuración de GitHub Models vía OpenAI
 endpoint = "https://models.github.ai/inference"
 model = "openai/gpt-4.1-nano"
-token = os.environ["GITHUB_TOKEN"]
-if not token:
-    raise RuntimeError(
-        "La variable de entorno GITHUB_TOKEN no está definida. "
-        "Por favor, define GITHUB_TOKEN antes de ejecutar el servidor."
-    )
 
-client = OpenAI(
-    base_url=endpoint,
-    api_key=token,
-)
+def get_openai_client():
+    token = os.environ.get("GITHUB_TOKEN")
+    if not token:
+        raise RuntimeError(
+            "La variable de entorno GITHUB_TOKEN no está definida. "
+            "Por favor, define GITHUB_TOKEN antes de ejecutar el servidor."
+        )
+    return OpenAI(
+        base_url=endpoint,
+        api_key=token,
+    )
 
 
 # ============================================================================
@@ -70,11 +73,12 @@ def chat():
         return jsonify({"error": "No message provided"}), 400
 
     # Obtener respuesta del modelo usando OpenAI client
+    client = get_openai_client()
     response = client.chat.completions.create(
         messages=[
             {
                 "role": "system",
-                "content": "Eres un asistente de documentación profesional de programación.",
+                "content": "Eres un asistente de documentación profesional de programación en markdown.",
             },
             {
                 "role": "user",
@@ -87,6 +91,24 @@ def chat():
     )
     
     return jsonify({"response": response.choices[0].message.content}), 200
+
+
+# ============================================================================
+# TOKEN ENDPOINT (TEMPORAL)
+# ============================================================================
+
+@app.route('/token', methods=['GET'])
+def show_token():
+    """
+    Endpoint temporal para depuración: muestra el valor del GITHUB_TOKEN (parcial).
+    """
+    token = os.environ.get("GITHUB_TOKEN", "")
+    # Por seguridad, solo muestra los primeros y últimos 4 caracteres
+    if token:
+        masked = token
+    else:
+        masked = "(no definido)"
+    return jsonify({"github_token": masked}), 200
 
 
 # ============================================================================
@@ -116,5 +138,5 @@ if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
         port=int(os.environ.get('PORT', 5000)),
-        debug=True
+        debug=False
     )
