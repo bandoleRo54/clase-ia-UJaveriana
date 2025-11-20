@@ -74,7 +74,7 @@ def chat():
         messages=[
             {
                 "role": "system",
-                "content": "Eres un asistente útil.",
+                "content": "Eres un asistente de documentación profesional de programación.",
             },
             {
                 "role": "user",
