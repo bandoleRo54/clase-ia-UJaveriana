@@ -1,0 +1,219 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "18946fd6-3eaa-4f05-86e2-8ff93bbb9576",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/data/*.py",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "dca00e20-3290-452a-a79f-f96b0f4f23d6",
+      "name": "Read/Write Files from Disk",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import ast\nimport base64\n\noutput = []\n\nfor item in _input.all():\n    # Cargar el archivo desde los datos binarios\n    file_binary = item.binary['data']['data']\n    file_content = base64.b64decode(file_binary).decode('utf-8')\n    \n    # Parsear el árbol AST\n    tree = ast.parse(file_content)\n    functions = []\n    classes = []\n    \n    for node in ast.walk(tree):\n        if isinstance(node, ast.FunctionDef):\n            functions.append({\n                'name': node.name,\n                'args': [arg.arg for arg in node.args.args],\n                'docstring': ast.get_docstring(node),\n                'line_number': node.lineno\n            })\n        elif isinstance(node, ast.ClassDef):\n            classes.append({\n                'name': node.name,\n                'docstring': ast.get_docstring(node),\n                'methods': [n.name for n in node.body if isinstance(n, ast.FunctionDef)]\n            })\n    \n    # Estructura de salida por cada archivo\n    output.append({\n        'fileName': item.binary['data']['fileName'] if 'fileName' in item.binary['data'] else 'unknown',\n        'functions': functions,\n        'classes': classes,\n    })\n\n# La salida del nodo\nreturn output"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "646138f7-c039-4ef6-b541-2a932c1953a7",
+      "name": "Code in Python (Beta)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7002a96d-9cb7-423e-a056-92afb91815c0",
+              "name": "prompt",
+              "value": "=Código analizado del archivo {{$json[\"fileName\"]}}:\n\nCLASES:\n{{ $json[\"classes\"].map(cls => cls.name + \": \" + (cls.docstring || \"Sin docstring\")).join('\\n') }}\n\nFUNCIONES:\n{{ $json[\"functions\"].map(fn => fn.name + '(' + fn.args.join(', ') + '): ' + (fn.docstring || \"Sin docstring\")).join('\\n') }}\n\nPor favor, genera documentación Markdown profesional para este archivo.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        0
+      ],
+      "id": "412f9bc5-d6ec-4111-b487-a03b68f24683",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://models.github.ai/inference",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "api-key:",
+              "value": "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"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "json",
+        "body": "={\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Eres un generador de documentación Markdown profesional. Recibe estructura de código y comentarios y crea documentación clara, profesional y útil como los ejemplos brindados.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{$json['prompt']}}\"\n    }\n  ],\n  \"temperature\": 1.0,\n  \"top_p\": 1.0,\n  \"model\": \"openai/gpt-4-1-nano\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        832,
+        0
+      ],
+      "id": "33c06180-8b5e-42d9-a1be-57644dbd314e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/data/{{$json[\"fileName\"]}}.md",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        0
+      ],
+      "id": "00b5750c-368f-4efe-81ba-22ff0d98c6a1",
+      "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "db238b75-6c46-4e28-a553-498e3c27340c",
+              "name": "data",
+              "value": "=Buffer.from($json[\"choices\"][0][\"message\"][\"content\"], \"utf8\").toString(\"base64\")",
+              "type": "binary"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "28732083-9dc3-4030-bbd4-333e1b924081",
+      "name": "Edit Fields1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Beta)": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "95abbda4-ff0f-4eed-831d-a605258c64e2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "26ba8d9fafff5129142c4b0117c7d4dc3fd50f2f0dff35100ddfe06c873b2bfd"
+  },
+  "id": "eg97c65LkJRHcORO",
+  "tags": []
+}
