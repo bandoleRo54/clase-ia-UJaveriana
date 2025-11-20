@@ -15,7 +15,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload
 # Configuración de GitHub Models vía OpenAI
 endpoint = "https://models.github.ai/inference"
 model = "openai/gpt-4.1-nano"
-token = os.environ.get("GITHUB_TOKEN")
+token = os.environ["GITHUB_TOKEN"]
 if not token:
     raise RuntimeError(
         "La variable de entorno GITHUB_TOKEN no está definida. "
@@ -56,16 +56,15 @@ def health():
 def chat():
     """
     Chat with the GPT-4.1-nano model.
-    
-    Expected JSON:
-    {
-        "message": "Hello, how can you assist me?"
-    }
-    
-    Returns:
-        JSON with the model's response
     """
-    data = request.get_json()
+    # Verifica que el Content-Type sea application/json
+    if not request.is_json:
+        return jsonify({"error": "Content-Type debe ser application/json"}), 415
+
+    data = request.get_json(silent=True)
+    if data is None:
+        return jsonify({"error": "Body no es JSON válido"}), 400
+
     user_message = data.get("message", "")
     if not user_message:
         return jsonify({"error": "No message provided"}), 400

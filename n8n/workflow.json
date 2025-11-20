@@ -69,19 +69,15 @@
       "parameters": {
         "method": "POST",
         "url": "http://192.168.1.25:5000/chat",
-        "sendHeaders": true,
-        "headerParameters": {
+        "sendBody": true,
+        "bodyParameters": {
           "parameters": [
             {
-              "name": "Content-Type",
-              "value": "application/json"
+              "name": "message",
+              "value": "=={{$json[\"prompt\"]}}"
             }
           ]
         },
-        "sendBody": true,
-        "contentType": "raw",
-        "rawContentType": "json",
-        "body": "={\n  \"message\": \"{{$json['prompt']}}\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -205,7 +201,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "f35e54f5-5c31-4c25-aa8a-4c76dde95a50",
+  "versionId": "9eff8ac7-10d6-44ed-9a14-025df6607927",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "26ba8d9fafff5129142c4b0117c7d4dc3fd50f2f0dff35100ddfe06c873b2bfd"
