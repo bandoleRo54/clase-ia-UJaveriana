@@ -117,7 +117,7 @@ Esto levantará el servicio de n8n en tu máquina.
    http://<TU_IP_LOCAL>:5678/
    ```
 
-   ![Verifica la IP en la barra de direcciones](URL.png)
+   ![Verifica la IP en la barra de direcciones](/assets/URL.png)
 
 2. **Carga el workflow:**
 
@@ -136,7 +136,7 @@ Esto levantará el servicio de n8n en tu máquina.
    - Haz clic en "Ejecutar workflow" en n8n.
    - El flujo analizará archivos `.py`, generará el prompt, enviará la petición al servidor Flask y guardará el Markdown generado.
 
-   ![Vista del workflow en n8n](WORKFLOW.png)
+   ![Vista del workflow en n8n](/assets/WORKFLOW.png)
 
 ---
 
