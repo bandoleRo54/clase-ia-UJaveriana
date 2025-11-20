@@ -92,7 +92,8 @@
     {
       "parameters": {
         "operation": "write",
-        "fileName": "=/data/{{$json[\"fileName\"]}}.md",
+        "fileName": "=/data/{{$binary.doc.fileName}}",
+        "dataPropertyName": "=doc",
         "options": {}
       },
       "type": "n8n-nodes-base.readWriteFile",
@@ -106,26 +107,16 @@
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "db238b75-6c46-4e28-a553-498e3c27340c",
-              "name": "data",
-              "value": "=Buffer.from($json[\"choices\"][0][\"message\"][\"content\"], \"utf8\").toString(\"base64\")",
-              "type": "binary"
-            }
-          ]
-        },
-        "options": {}
+        "jsCode": "// Cada item trae item.json.response con el Markdown\n// Creamos un campo binario llamado \"doc\"\nreturn items.map(item => {\n  const content = item.json.response;           // Texto Markdown\n  const fileName = item.json.fileName           // Si en tu flujo viene de antes\n                  ? item.json.fileName + '.md'\n                  : 'README.md';\n\n  item.binary = item.binary || {};\n  item.binary.doc = {\n    data: Buffer.from(content, 'utf8').toString('base64'),\n    mimeType: 'text/markdown',\n    fileName,\n    fileExtension: 'md'\n  };\n\n  // (Opcional) conservar texto original aparte:\n  item.json.markdown = content;\n\n  return item;\n});"
       },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
         1040,
         0
       ],
-      "id": "28732083-9dc3-4030-bbd4-333e1b924081",
-      "name": "Edit Fields1"
+      "id": "7f5db488-ac43-4137-b938-293ef856dcc5",
+      "name": "Code in JavaScript"
     }
   ],
   "pinData": {},
@@ -178,14 +169,14 @@
       "main": [
         [
           {
-            "node": "Edit Fields1",
+            "node": "Code in JavaScript",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Edit Fields1": {
+    "Code in JavaScript": {
       "main": [
         [
           {
@@ -201,7 +192,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "9eff8ac7-10d6-44ed-9a14-025df6607927",
+  "versionId": "9f932172-8907-45b6-9f62-fcd2a8453d94",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "26ba8d9fafff5129142c4b0117c7d4dc3fd50f2f0dff35100ddfe06c873b2bfd"
