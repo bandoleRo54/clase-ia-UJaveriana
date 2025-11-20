@@ -68,24 +68,20 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://models.github.ai/inference",
+        "url": "http://192.168.1.25:5000/chat",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "Content-Type",
               "value": "application/json"
-            },
-            {
-              "name": "api-key:",
-              "value": "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"
             }
           ]
         },
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "json",
-        "body": "={\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Eres un generador de documentación Markdown profesional. Recibe estructura de código y comentarios y crea documentación clara, profesional y útil como los ejemplos brindados.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"{{$json['prompt']}}\"\n    }\n  ],\n  \"temperature\": 1.0,\n  \"top_p\": 1.0,\n  \"model\": \"openai/gpt-4-1-nano\"\n}",
+        "body": "={\n  \"message\": \"{{$json['prompt']}}\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -209,7 +205,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "95abbda4-ff0f-4eed-831d-a605258c64e2",
+  "versionId": "f35e54f5-5c31-4c25-aa8a-4c76dde95a50",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "26ba8d9fafff5129142c4b0117c7d4dc3fd50f2f0dff35100ddfe06c873b2bfd"
